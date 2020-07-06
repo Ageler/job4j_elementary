@@ -6,6 +6,6 @@ public class EqLast {
             return false;
         }
 
-        return false;
+        return true;
     }
 }
