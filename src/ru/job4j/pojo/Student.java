@@ -29,4 +29,8 @@ public class Student {
         this.date = date;
     }
 
+    public void output() {
+        System.out.println(this.getDate() + this.getFullName() + this.getGroup());
+    }
+
 }
