@@ -8,6 +8,7 @@ public class UserStore {
             if (user.getUsername().equals(login)) {
               find = user;
                 System.out.println("User has been found!");
+                break;
             }
         }
         if (find == null) {
