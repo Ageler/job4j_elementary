@@ -10,7 +10,7 @@ public class UsageArrayList {
         arr.add("Stepan");
         for (String name: arr
              ) {
-            System.out.println(name);
+            System.out.println(name );
         }
     }
 
