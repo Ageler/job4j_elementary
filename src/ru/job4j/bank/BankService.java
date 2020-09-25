@@ -1,9 +1,6 @@
 package ru.job4j.bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BankService {
     private Map<User, List<Account>> users = new HashMap<>();
@@ -13,7 +10,7 @@ public class BankService {
     }
 
     public void addAccount(String passport, Account account) {
-        User user = findByPassport(passport);
+        Optional<User> user = findByPassport(passport);
         if(user != null) {
             List<Account> userAcc = users.get(user);
             if (!userAcc.contains(account)) {
@@ -22,43 +19,34 @@ public class BankService {
         }
     }
 
-    public User findByPassport(String passport) {
-        User find = null;
-        for (User u : users.keySet()
-                ) {
-            if(u.getPassport().equals(passport)) {
-                find = u;
-                break;
-            }
-        }
+    public Optional<User> findByPassport(String passport) {
+        Optional<User> find = users.keySet().stream()
+                .filter(user -> user.getPassport().equals(passport)).findFirst();
+
         return find;
     }
 
-    public Account findByRequisite(String passport, String requisite) {
-        Account account = null;
-        User user = findByPassport(passport);
-        if(user != null) {
-            List<Account> userAcc = users.get(user);
-            for (Account acc : userAcc
-            ) {
-                if (acc.getRequisite().equals(requisite)) {
-                    account = acc;
-                }
-            }
+    public Optional<Account> findByRequisite(String passport, String requisite) {
+        Optional<User> user = findByPassport(passport);
+        if(user.isEmpty()) {
+            return Optional.empty();
         }
-        return account;
+            Optional<Account> userAcc = users.get(user).stream()
+                    .filter(account -> account.getRequisite().equals(requisite)).findFirst();
+
+        return userAcc;
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                  String destPassport, String destRequisite, double amount) {
         boolean rsl = false;
-        Account src = findByRequisite(srcPassport, srcRequisite);
-        Account dest = findByRequisite(destPassport, destRequisite);
-        if(src.getRequisite() != null &&
-                dest.getRequisite() != null &&
-        src.getBalance() >= amount) {
-            src.setBalance(src.getBalance() - amount);
-            dest.setBalance(dest.getBalance() + amount);
+        Optional<Account> src = findByRequisite(srcPassport, srcRequisite);
+        Optional<Account> dest = findByRequisite(destPassport, destRequisite);
+        if(src.get().getRequisite() != null &&
+                dest.get().getRequisite() != null &&
+        src.get().getBalance() >= amount) {
+            src.get().setBalance(src.get().getBalance() - amount);
+            dest.get().setBalance(dest.get().getBalance() + amount);
             rsl = true;
         }
         return rsl;
