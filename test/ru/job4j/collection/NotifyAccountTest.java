@@ -12,12 +12,12 @@ import static org.junit.Assert.assertThat;
 public class NotifyAccountTest extends TestCase {
 
     public void testSent() {
-        List<Account> accounts = Arrays.asList(
+        List<Account> accounts = List.of(
                 new Account("123", "Petr Arsentev", "eDer3432f"),
                 new Account("142", "Petr Arsentev", "000001")
         );
         HashSet<Account> expect = new HashSet<>(
-                Arrays.asList(
+                List.of(
                         new Account("123", "Petr Arsentev", "eDer3432f"),
                         new Account("142", "Petr Arsentev", "000001")
                 )
@@ -27,12 +27,12 @@ public class NotifyAccountTest extends TestCase {
     }
 
     public void testNotSent() {
-        List<Account> accounts = Arrays.asList(
+        List<Account> accounts = List.of(
                 new Account("123", "Petr Arsentev", "eDer3432f"),
                 new Account("123", "Petr Arsentev", "000001")
         );
         HashSet<Account> expect = new HashSet<>(
-                Arrays.asList(
+                List.of(
                         new Account("123", "Petr Arsentev", "eDer3432f")
                 )
         );
